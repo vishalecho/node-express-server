@@ -4,7 +4,7 @@ var app = express();
 
 app.use(express.static(__dirname + "/public")); //use static files in ROOT/public folder
 
-app.get("/defaultDishList", function (request, response) {
+app.get("/", function (request, response) {
     let itemList = {
         "storeId": 3524,
         "dishList": [

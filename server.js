@@ -1,7 +1,7 @@
 var express = require("express");
 
 var app = express();
-
+const port=process.env.PORT || 3000;
 app.use(express.static(__dirname + "/public")); //use static files in ROOT/public folder
 
 app.get("/", function (request, response) {
@@ -55,4 +55,8 @@ app.get("/dishList", function (request, response) {
     response.send(itemList);
 });
 
-app.listen(port, host);
+app.listen(port,() => {
+
+    console.log(`Server running at port `+port);
+    
+    });

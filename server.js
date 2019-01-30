@@ -29,7 +29,18 @@ app.get("/", function (request, response) {
                 "sellingPrice": "100.00",
                 "tag": "",
                 "rating": "4.8/5"
-            }
+            },
+              {
+                "dishId": "104",
+                "dishName": "Biryani2",
+                "dishBatchNumber": "112300023842",
+                "dishDescription": "Taste of India's best biryani dum.",
+                "dishImage": "https://github.com/vishalecho/shop-server/blob/master/public/images/dish.jpg",
+                "dishCategory": "Non-Veg",
+                "sellingPrice": "180.00",
+                "tag": "Best Seller",
+                "rating": "4.3/5"
+            },
         ]
     };
     response.send(itemList);

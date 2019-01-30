@@ -41,6 +41,39 @@ app.get("/", function (request, response) {
                 "tag": "Best Seller",
                 "rating": "4.3/5"
             },
+                {
+                "dishId": "106",
+                "dishName": "Biryani",
+                "dishBatchNumber": "11230002384",
+                "dishDescription": "Taste of India's best biryani dum.",
+                "dishImage": "https://github.com/vishalecho/shop-server/blob/master/public/images/dish.jpg",
+                "dishCategory": "Non-Veg",
+                "sellingPrice": "180.00",
+                "tag": "Best Seller",
+                "rating": "4.3/5"
+            },
+            {
+                "dishId": "107",
+                "dishName": "Coffee",
+                "dishBatchNumber": "1123424384",
+                "dishDescription": "Best Coffee",
+                "dishImage": "https://github.com/vishalecho/shop-server/blob/master/public/images/dish.jpg",
+                "dishCategory": "Veg Beverage",
+                "sellingPrice": "100.00",
+                "tag": "",
+                "rating": "4.8/5"
+            },
+              {
+                "dishId": "108",
+                "dishName": "Biryani2",
+                "dishBatchNumber": "112300023842",
+                "dishDescription": "Taste of India's best biryani dum.",
+                "dishImage": "https://github.com/vishalecho/shop-server/blob/master/public/images/dish.jpg",
+                "dishCategory": "Non-Veg",
+                "sellingPrice": "180.00",
+                "tag": "Best Seller",
+                "rating": "4.3/5"
+            }
         ]
     };
     response.send(itemList);

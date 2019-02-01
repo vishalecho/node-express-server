@@ -165,8 +165,21 @@ app.post('/api/upload', (req, res) => {
     })
     res.send('Done')
 })
-
-
+//Client - add FormData to push
+// fileUpload = (event) => {
+//     if(this.state.fileStatus){
+//       axios.post('http://localhost:9000/upload', this.state.formy, {
+//           headers: {
+//             'Content-Type': 'multipart/form-data'
+//           }
+//         }).then(function (response) {
+//             alert("Uploaded"+response.data)
+//             this.setState({formy: new FormData(), fileStatus: false})
+//         }).catch(function (error) {
+//         })
+//     }
+  
+//   }
 app.listen(port, () => {
     console.log(`Server running at port ` + port);
 });

@@ -10,7 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.2",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
+    "formidable": "^1.2.1",
+    "fs": "0.0.1-security",
     "multer": "^1.2.0"
   },
   "engines": {

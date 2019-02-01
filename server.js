@@ -1,10 +1,15 @@
-var express = require("express");
-var multer = require('multer');
-var bodyParser = require('body-parser')
-
+const express = require("express");
+const bodyParser = require('body-parser')
+const fs = require('fs')
+const formidable = require('formidable')
+const cors = require('cors')
+let readdir = require('fs-readdir-promise');
 var app = express();
-const port=process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 app.use(express.static(__dirname + "/public")); //use static files in ROOT/public folder
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cors())
 
 app.get("/", function (request, response) {
     let itemList = {
@@ -32,7 +37,7 @@ app.get("/", function (request, response) {
                 "tag": "",
                 "rating": "4.8/5"
             },
-              {
+            {
                 "dishId": "105",
                 "dishName": "Biryani2",
                 "dishBatchNumber": "112300023842",
@@ -43,7 +48,7 @@ app.get("/", function (request, response) {
                 "tag": "Best Seller",
                 "rating": "4.3/5"
             },
-                {
+            {
                 "dishId": "106",
                 "dishName": "Biryani",
                 "dishBatchNumber": "11230002384",
@@ -65,7 +70,7 @@ app.get("/", function (request, response) {
                 "tag": "",
                 "rating": "4.8/5"
             },
-              {
+            {
                 "dishId": "108",
                 "dishName": "Biryani2",
                 "dishBatchNumber": "112300023842",
@@ -101,29 +106,67 @@ app.get("/dishList", function (request, response) {
     response.send(itemList);
 });
 
-var Storage = multer.diskStorage({
-    destination: function (req, file, callback) {
-        callback(null, "./Upload/Images");
-    },
-    filename: function (req, file, callback) {
-    callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
-    }
+// var Storage = multer.diskStorage({
+//     destination: function (req, file, callback) {
+//         callback(null, "./Upload/Images");
+//     },
+//     filename: function (req, file, callback) {
+//     callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
+//     }
+// });
+
+// var upload = multer({ storage: Storage }).array("imgUploader", 3); //Field name and max count
+
+app.post('/api/upload', (req, res) => {
+    console.log(req.body)
+    let form = new formidable.IncomingForm();
+    form.multiples = true
+    form.parse(req, function (err, fields, files) {
+        console.log("Files", files);
+        let done = 0
+        if (typeof files.file.length == "undefined") {
+            let oldpath = files.file.path;
+            let newpath = __dirname + '/public/upload/' + files.file.name;
+            let readStream = fs.createReadStream(oldpath);
+            let writeStream = fs.createWriteStream(newpath);
+            readStream.on('error', function (err) {
+                console.log(err)
+            });
+            writeStream.on('error', function (err) {
+                console.log(err)
+            });
+            readStream.on('close', function () {
+                fs.unlink(oldpath, function () {
+
+                });
+            });
+            readStream.pipe(writeStream)
+        } else {
+            files.file.forEach((i, index) => {
+                let oldpath = i.path;
+                let newpath = __dirname + '/public/uploads/' + i.name;
+                let readStream = fs.createReadStream(oldpath);
+                let writeStream = fs.createWriteStream(newpath);
+                readStream.on('error', function (err) {
+                    console.log(err)
+                });
+                writeStream.on('error', function (err) {
+                    console.log(err)
+                });
+                readStream.on('close', function () {
+                    fs.unlink(oldpath, function () {
+                        done += 1
+                        done === files.file.length
+                    });
+                });
+                readStream.pipe(writeStream);
+            })
+        }
+    })
+    res.send('Done')
+})
+
+
+app.listen(port, () => {
+    console.log(`Server running at port ` + port);
 });
-
-var upload = multer({ storage: Storage }).array("imgUploader", 3); //Field name and max count
-
-app.post("/api/Upload", function (req, res) {
-    upload(req, res, function (err) {
-    if (err) {
-    return res.end("Something went wrong!");
-    }
-    return res.end("File uploaded sucessfully!.");
-    });
-});
-
-
-app.listen(port,() => {
-
-    console.log(`Server running at port `+port);
-    
-    });

@@ -3,9 +3,8 @@ const bodyParser = require('body-parser')
 const fs = require('fs')
 const formidable = require('formidable')
 const cors = require('cors')
-// let readdir = require('fs-readdir-promise');
 var app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 app.use(express.static(__dirname + "/public")); //use static files in ROOT/public folder
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -71,6 +70,7 @@ app.get("/", function (request, response) {
                 "rating": "4.8/5"
             },
             {
+                
                 "dishId": "108",
                 "dishName": "Biryani2",
                 "dishBatchNumber": "112300023842",
@@ -122,36 +122,44 @@ app.post('/api/upload', (req, res) => {
     let form = new formidable.IncomingForm();
     form.multiples = true
     form.parse(req, function (err, fields, files) {
-        console.log("Files", files);
+        console.log("Files", typeof(files), files);
         let done = 0
-        if (typeof files.file.length == "undefined") {
+     
+        if (typeof(files.file.length) == "undefined") {
             let oldpath = files.file.path;
             let newpath = __dirname + '/public/upload/' + files.file.name;
             let readStream = fs.createReadStream(oldpath);
             let writeStream = fs.createWriteStream(newpath);
             readStream.on('error', function (err) {
-                console.log(err)
+                console.log("File Read Stream Error",err)
+                res.send(err)
             });
             writeStream.on('error', function (err) {
-                console.log(err)
+                console.log("File write stream error",err)
+                res.send(err)
             });
             readStream.on('close', function () {
                 fs.unlink(oldpath, function () {
-
+                    
                 });
             });
             readStream.pipe(writeStream)
+            res.send('Success')
         } else {
             files.file.forEach((i, index) => {
                 let oldpath = i.path;
-                let newpath = __dirname + '/public/uploads/' + i.name;
+                let newpath = __dirname + '/public/upload/' + i.name;
                 let readStream = fs.createReadStream(oldpath);
                 let writeStream = fs.createWriteStream(newpath);
                 readStream.on('error', function (err) {
                     console.log(err)
+                    res.send(err)
+
                 });
                 writeStream.on('error', function (err) {
                     console.log(err)
+                    res.send(err)
+
                 });
                 readStream.on('close', function () {
                     fs.unlink(oldpath, function () {
@@ -160,10 +168,13 @@ app.post('/api/upload', (req, res) => {
                     });
                 });
                 readStream.pipe(writeStream);
+               
             })
+            res.send('Success')
         }
+        res.send('Success')
     })
-    res.send('Done')
+    
 })
 //Client - add FormData to push
 // fileUpload = (event) => {

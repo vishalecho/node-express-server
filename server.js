@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const fs = require('fs')
 const formidable = require('formidable')
 const cors = require('cors')
-let readdir = require('fs-readdir-promise');
+// let readdir = require('fs-readdir-promise');
 var app = express();
 const port = process.env.PORT || 3000;
 app.use(express.static(__dirname + "/public")); //use static files in ROOT/public folder

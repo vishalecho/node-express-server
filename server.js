@@ -180,8 +180,7 @@ app.post('/api/upload', (req, res) => {
             res.set('Content-Type', 'text/html');
             res.status(200).send(new Buffer('<p>Success</p>'));
         }
-        res.set('Content-Type', 'text/html');
-        res.status(200).send(new Buffer('<p>Success</p>'));
+     
     })
     
 })

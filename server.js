@@ -133,13 +133,13 @@ app.post('/api/upload', (req, res) => {
             readStream.on('error', function (err) {
                 console.log("File Read Stream Error",err)
                 res.set('Content-Type', 'text/html');
-                res.status(500).send(new Buffer('<p>Something went wrong</p>'));
+                res.status(500).send(new Buffer.alloc('<p>Something went wrong</p>'));
                 // res.send(err)
             });
             writeStream.on('error', function (err) {
                 console.log("File write stream error",err)
                 res.set('Content-Type', 'text/html');
-                res.status(500).send(new Buffer('<p>Something went wrong</p>'));
+                res.status(500).send(new Buffer.alloc('<p>Something went wrong</p>'));
             });
             readStream.on('close', function () {
                 fs.unlink(oldpath, function () {
